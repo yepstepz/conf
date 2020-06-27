@@ -1,8 +1,11 @@
 version: 2.1
 jobs:
-  pull:
+  deploy-prod:
+    docker:
+      # specify the version you desire here (you might not want node)
+      - image: circleci/node:7.10
     steps:
-      - add_ssh_keys
+      - checkout
       - run:
           name: known_hosts sadness
           command: ssh-keyscan -H $SITE_SSH_HOST >> ~/.ssh/known_hosts
@@ -14,7 +17,7 @@ workflows:
   version: 2.1
   just-pull-new-stuff:
     jobs:
-      - pull:
+      - deploy-prod:
           filters:
             branches:
               only:
